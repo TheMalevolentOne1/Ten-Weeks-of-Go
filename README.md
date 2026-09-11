@@ -1,6 +1,6 @@
 # Ten Weeks of Go Learning
 
-## Week 1 — Command-Line Interface Tasklist
+## Week 1 - Command-Line Interface - Tasklist
 
 ### Objective
 
