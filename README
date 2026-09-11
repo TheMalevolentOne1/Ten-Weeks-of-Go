@@ -1,92 +1,157 @@
 # Ten Weeks of Go Learning
-## Week 1 - Command-Line Interface Tasklist
+
+## Week 1 — Command-Line Interface Tasklist
+
 ### Objective
-Week 1's objective is to create a command-line interface task list that allows the user to do the following:
 
-- View all tasks
-- Add a new task
-- Remove an existing task
-- Persist tasks between program executions.
+The objective for **Week 1** is to create a command-line interface (CLI) task list in **Go**.
 
-Tasks are stored locally in a JSON file, using a unique, incremental ID for each task.
-### Features
+The application will allow the user to:
 
-[ ] List All Tasks
-[ ] Add New Task
-[ ] Remove an Existing Task
-[ ] JSON File for Task Persistence
-[ ] Sort Tasks Alphabetically
-[ ] Assign each task a unique incremental ID
-[ ] Minimal error handling
-[ ] Unit Test primary functionality
-### Usage
-`$ tasklist all`
+* View all tasks
+* Add a new task
+* Remove an existing task
+* Persist tasks between program executions
 
-|--------------------|
+Tasks are stored locally in a **JSON file** and are assigned a unique, incremental ID.
+
+---
+
+## Features
+
+* [ ] List all tasks
+* [ ] Add a new task
+* [ ] Remove an existing task
+* [ ] Persist tasks using a JSON file
+* [ ] Sort tasks alphabetically
+* [ ] Assign each task a unique incremental ID
+* [ ] Implement minimal error handling
+* [ ] Unit test primary functionality
+
+---
+
+## Usage
+
+### List All Tasks
+
+```console
+$ tasklist all
+```
+
+```text
++--------------------+
 | TASKLIST MANAGER   |
-|--------------------|
-|  1. A Task One!    |
-|  2. B Task Two!    |
-|  3. C Task Three!  |
-|--------------------|
++--------------------+
+| 1. A Task One!     |
+| 2. B Task Two!     |
+| 3. C Task Three!   |
++--------------------+
+```
 
 If no tasks have been added:
 
-`$ tasklist all`
+```console
+$ tasklist all
+```
 
-|--------------------|
+```text
++--------------------+
 | TASKLIST MANAGER   |
-|--------------------|
++--------------------+
 |    No Tasks Added  |
-|--------------------|
++--------------------+
+```
 
-Add a Task
+---
+
+### Add a Task
+
+```text
 tasklist add <TASK>
+```
 
 Adds a new task and assigns it a unique ID.
 
 Example:
 
+```console
 $ tasklist add "Learn Go"
+```
 
-|------------------|
+```text
++------------------+
 | TASKLIST MANAGER |
-|------------------|
++------------------+
 |  Task Added - 1  |
-|------------------|
++------------------+
+```
 
 If the task already exists:
 
+```console
 $ tasklist add "Learn Go"
+```
 
-|------------------|
+```text
++------------------+
 | TASKLIST MANAGER |
-|------------------|
++------------------+
 |  Task Exists - 1 |
-|------------------|
-Remove a Task
++------------------+
+```
+
+---
+
+### Remove a Task
+
+```text
 tasklist remove <TASK_ID>
+```
 
 Removes a task using its unique ID.
 
 Example:
 
+```console
 $ tasklist remove 1
+```
 
-|------------------|
+```text
++------------------+
 | TASKLIST MANAGER |
-|------------------|
++------------------+
 |   Task Deleted   |
-|------------------|
++------------------+
+```
 
 If the specified task does not exist:
 
+```console
 $ tasklist remove 99
+```
 
-|------------------|
+```text
++------------------+
 | TASKLIST MANAGER |
-|------------------|
++------------------+
 |  No Task Found!  |
-|------------------|
++------------------+
+```
 
-`delete` may also be supported as an *alias* for **remove** in a future iteration.
+> **Future consideration:** `delete` may be introduced as an alias for `remove` in a future iteration.
+
+---
+
+## Project Goals
+
+This project is the first of **Ten Weeks of Go Learning**.
+
+The primary goal of Week 1 is to develop familiarity with:
+
+* Go project structure
+* Command-line arguments
+* File I/O
+* JSON encoding and decoding
+* Structs and methods
+* Error handling
+* Unit testing
