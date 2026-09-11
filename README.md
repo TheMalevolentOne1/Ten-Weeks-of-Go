@@ -1,7 +1,17 @@
 # Ten Weeks of Go Learning
+## Installation
 
-## Week 1 - Command-Line Interface - Tasklist
+Clone the repo and build the binary from the `Week` folder. E.g:
 
+```console
+$ git clone https://github.com/TheMalevolentOne1/Ten-Weeks-of-Go.git
+$ cd "Ten-Weeks-of-Go/Week 1 - CLITaskList"
+$ go build -o tasklist .
+```
+
+This creates a `tasklist` executable you can run with `./tasklist`.
+
+## Week 1 — Command-Line Interface Tasklist
 ### Objective
 
 The objective for **Week 1** is to create a command-line interface (CLI) task list in **Go**.
