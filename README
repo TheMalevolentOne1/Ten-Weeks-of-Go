@@ -143,9 +143,6 @@ $ tasklist remove 99
 ---
 
 ## Project Goals
-
-This project is the first of **Ten Weeks of Go Learning**.
-
 The primary goal of Week 1 is to develop familiarity with:
 
 * Go project structure
