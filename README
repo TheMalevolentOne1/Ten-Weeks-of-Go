@@ -1,0 +1,92 @@
+# Ten Weeks of Go Learning
+## Week 1 - Command-Line Interface Tasklist
+### Objective
+Week 1's objective is to create a command-line interface task list that allows the user to do the following:
+
+- View all tasks
+- Add a new task
+- Remove an existing task
+- Persist tasks between program executions.
+
+Tasks are stored locally in a JSON file, using a unique, incremental ID for each task.
+### Features
+
+[ ] List All Tasks
+[ ] Add New Task
+[ ] Remove an Existing Task
+[ ] JSON File for Task Persistence
+[ ] Sort Tasks Alphabetically
+[ ] Assign each task a unique incremental ID
+[ ] Minimal error handling
+[ ] Unit Test primary functionality
+### Usage
+`$ tasklist all`
+
+|--------------------|
+| TASKLIST MANAGER   |
+|--------------------|
+|  1. A Task One!    |
+|  2. B Task Two!    |
+|  3. C Task Three!  |
+|--------------------|
+
+If no tasks have been added:
+
+`$ tasklist all`
+
+|--------------------|
+| TASKLIST MANAGER   |
+|--------------------|
+|    No Tasks Added  |
+|--------------------|
+
+Add a Task
+tasklist add <TASK>
+
+Adds a new task and assigns it a unique ID.
+
+Example:
+
+$ tasklist add "Learn Go"
+
+|------------------|
+| TASKLIST MANAGER |
+|------------------|
+|  Task Added - 1  |
+|------------------|
+
+If the task already exists:
+
+$ tasklist add "Learn Go"
+
+|------------------|
+| TASKLIST MANAGER |
+|------------------|
+|  Task Exists - 1 |
+|------------------|
+Remove a Task
+tasklist remove <TASK_ID>
+
+Removes a task using its unique ID.
+
+Example:
+
+$ tasklist remove 1
+
+|------------------|
+| TASKLIST MANAGER |
+|------------------|
+|   Task Deleted   |
+|------------------|
+
+If the specified task does not exist:
+
+$ tasklist remove 99
+
+|------------------|
+| TASKLIST MANAGER |
+|------------------|
+|  No Task Found!  |
+|------------------|
+
+`delete` may also be supported as an *alias* for **remove** in a future iteration.
