@@ -1,5 +1,5 @@
 # Ten Weeks of Go Learning
-## Installation
+## Installation (When Week 1 Complete (Not Current))
 
 Clone the repo and build the binary from the `Week` folder. E.g:
 
