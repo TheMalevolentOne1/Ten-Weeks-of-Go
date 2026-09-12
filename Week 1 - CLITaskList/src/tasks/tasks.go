@@ -6,18 +6,19 @@ import (
 	"tasklist/storage"
 )
 
-type task struct {
+type Task struct {
 	name        string
 	description string
 }
 
-func AddTask(name string, desc string) {
+func CreateTask(name string, desc string) Task {
 	fmt.Println("Adding Task")
 
-	data, err := storage.Read()
+	res := storage.Write(name, desc)
 
-	if err == nil {
-		fmt.Println(string(data))
-		return
+	if res {
+		fmt.Println("Successfully write to File")
+	} else {
+		fmt.Println("Failure to write to File")
 	}
 }
