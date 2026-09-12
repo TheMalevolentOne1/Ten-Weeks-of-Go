@@ -31,6 +31,7 @@ func AddTask(name string, desc string) {
 
 		var tasks []task
 
+		// if dataStored cannot parse/marshal the JSON file data against the Task Struct then it will Error.
 		data := json.Unmarshal(dataStored, &tasks)
 
 		if err == nil {
