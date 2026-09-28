@@ -25,6 +25,8 @@ func CreateTask(name string, desc string) Task {
 	newTask := Task{}
 	newTask.name = name
 	newTask.description = desc
+
+	return newTask
 }
 
 func AddTaskToList(t Task) {

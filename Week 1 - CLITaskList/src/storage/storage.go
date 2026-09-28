@@ -58,7 +58,3 @@ func Read() ([]byte, error) {
 		return []byte(dataStored), err
 	}
 }
-
-func Write(task []byte) bool {
-
-}
