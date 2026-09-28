@@ -1,3 +1,6 @@
+/*
+Command-Line Arguments and Parsing User Input to Tasks and Storage
+*/
 package main
 
 import (
@@ -15,16 +18,29 @@ func main() {
 	}
 
 	// Ensure Subcommand Exists
-	subcommand := os.Args[1]
+	subcommand := os.Args[1] // option
+	firstArg := os.Args[2]   // task name
+	secondArg := os.Args[3]  // task description
+
+	if subcommand == "all" {
+		tasks.ShowAllTasks()
+		return
+	}
+
+	if firstArg == "" {
+		fmt.Println("Missing Task Name")
+		return
+	}
 
 	switch subcommand {
-	case "add":
-		tasks.AddTask("Test", "Test")
-	case "remove":
+	case "Add":
+		if secondArg == "" {
+			fmt.Println("Missing Task Description")
+			return
+		}
+
 		break
-	case "list":
+	case "Remove":
 		break
-	default:
-		fmt.Println("etc")
 	}
 }

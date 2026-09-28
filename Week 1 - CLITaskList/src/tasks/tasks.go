@@ -3,7 +3,6 @@ package tasks
 
 import (
 	"fmt"
-	"tasklist/storage"
 )
 
 type Task struct {
@@ -11,14 +10,35 @@ type Task struct {
 	description string
 }
 
+var Tasks []Task
+
+func ShowAllTasks() {
+	for i := 0; i < len(Tasks); i++ {
+		fmt.Println(Tasks[i])
+	}
+	return
+}
+
 func CreateTask(name string, desc string) Task {
 	fmt.Println("Adding Task")
 
-	res := storage.Write(name, desc)
+	newTask := Task{}
+	newTask.name = name
+	newTask.description = desc
+}
 
-	if res {
-		fmt.Println("Successfully write to File")
+func AddTaskToList(t Task) {
+	// append(Tasks, t) - Something something pointer slices indexes something sigh.
+	fmt.Println("Task Added.")
+	return
+}
+
+// Helper Function
+// Brief: Return Next Tasks Slices Index
+func nextTaskIndex() int {
+	if lenTasks := len(Tasks); lenTasks == 0 {
+		return 0
 	} else {
-		fmt.Println("Failure to write to File")
+		return lenTasks + 1
 	}
 }

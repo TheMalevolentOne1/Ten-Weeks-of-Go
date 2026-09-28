@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"tasklist/tasks"
 )
 
 const file = "data/tasks.json"
@@ -49,7 +50,7 @@ func Read() ([]byte, error) {
 	storageExists()
 	dataStored, err := os.ReadFile(file_path)
 
-	json.Unmarshal(dataStored)
+	json.Unmarshal(dataStored, &tasks.Tasks)
 
 	if err != nil {
 		return []byte{}, err
