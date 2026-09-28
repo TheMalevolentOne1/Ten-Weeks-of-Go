@@ -17,39 +17,41 @@ var dir, err = os.Getwd()
 
 var file_path string = filepath.Join(dir, file)
 
-func FileExists(f string) bool {
-	if _, err := os.Stat(f); err == nil {
+func doesStorageExist() bool {
+	if _, err := os.Stat(file); err == nil {
 		return true
 	} else {
 		return false
 	}
 }
 
-func storageExists() {
-	if !FileExists(file_path) {
+func EnsureStorageExists() bool {
+	if !doesStorageExist() {
 		os.Mkdir("data", 0755) // create data folder, with 0755 perms (Owner: rwx, Everyone Else: r-x)
 
 		fmt.Println(file_path)
 
 		// create a tasks.json file in data directory
-		// file contents stored in an empty byte array
+		// file contents stored in an empty array in bytes
 		err = os.WriteFile(file_path, []byte("[]"), 0755)
 
 		if err != nil {
 			fmt.Println(err)
+			return false
 		}
 
-		return
+		return true
 	} else {
-		return
+		return true
 	}
 }
 
 func Read() ([]byte, error) {
-	storageExists()
+	if !EnsureStorageExists() {
+	}
 	dataStored, err := os.ReadFile(file_path)
 
-	json.Unmarshal(dataStored, &tasks.Tasks)
+	json.Unmarshal(dataStored, &tasks.Tasks) // Decode JSON data from dataStored into the Tasks slice address.
 
 	if err != nil {
 		return []byte{}, err

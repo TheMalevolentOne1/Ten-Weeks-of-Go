@@ -21,13 +21,14 @@ func main() {
 
 	// Ensure Subcommand Exists
 	subcommand := os.Args[1] // option
-	firstArg := os.Args[2]   // task name
-	secondArg := os.Args[3]  // task description
 
 	if subcommand == "all" {
 		tasks.ShowAllTasks()
 		return
 	}
+
+	firstArg := os.Args[2]  // task name
+	secondArg := os.Args[3] // task description
 
 	if firstArg == "" {
 		fmt.Println("Missing Task Name")
@@ -40,6 +41,7 @@ func main() {
 			fmt.Println("Missing Task Description")
 			return
 		}
+
 	case "Remove":
 		break
 	}

@@ -17,10 +17,13 @@ type Task struct {
 var Tasks []Task
 
 func ShowAllTasks() {
-	for i := 0; i < len(Tasks); i++ {
-		fmt.Println(Tasks[i])
+	if lenTasks := len(Tasks); lenTasks == 0 {
+		fmt.Println("No Tasks.")
+	} else {
+		for i := 0; i < lenTasks; i++ {
+			fmt.Println(Tasks[i])
+		}
 	}
-	return
 }
 
 func CreateTask(name string, desc string) Task {
@@ -37,15 +40,4 @@ func AddTaskToList(t Task) {
 	// append(Tasks, t) - Something something pointer slices indexes something sigh.
 	fmt.Println("Task Added.")
 	return
-}
-
-// TOBEREMOVEDPROBABLY
-// Helper Function
-// Brief: Return Next Tasks Slices Index
-func nextTaskIndex() int {
-	if lenTasks := len(Tasks); lenTasks == 0 {
-		return 0
-	} else {
-		return lenTasks + 1
-	}
 }
