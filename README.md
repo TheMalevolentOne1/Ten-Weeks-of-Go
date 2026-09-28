@@ -12,6 +12,7 @@ $ go build -o tasklist .
 This creates a `tasklist` executable you can run with `./tasklist`.
 
 ## [Week 1 — Command-Line Interface Tasklist](https://themalevolentone1.github.io/My-Notes-Collection/Notes/Programming/Go/Ten%20Weeks%20of%20Go/Go%20-%20Ten%20Weeks%20-%20Week%201%20-%20CLI%20Tasklist/)
+(11-09-2026) - (18-09-2026)
 ### Objective
 
 The objective for **Week 1** is to create a command-line interface (CLI) task list in **Go**.
