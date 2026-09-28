@@ -1,15 +1,14 @@
-/*
-Brief: Storage Package
-Handles json file storage returning byte array and error.
-*/
 package storage
 
+// Storage Module.
+// Brief: Writes and Reads the Tasks Struct Marshaling and Unmarshaling the JSON Encoding from the bytes which are Write/Read to/from the file.
+
 import (
-	"encoding/json"
-	"fmt"
-	"os"
-	"path/filepath"
-	"tasklist/tasks"
+	"encoding/json"  // For JSON handling
+	"fmt"            // Format for console display
+	"os"             // OS for arguments
+	"path/filepath"  // For Filepath handling
+	"tasklist/tasks" // For the Tasks Struct
 )
 
 const file = "data/tasks.json"

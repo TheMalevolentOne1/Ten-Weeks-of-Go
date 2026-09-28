@@ -1,6 +1,10 @@
 // Handles CRUD on Tasks
 package tasks
 
+/*
+Handles Tasks Struct, and Task Management.
+*/
+
 import (
 	"fmt"
 )
@@ -35,6 +39,7 @@ func AddTaskToList(t Task) {
 	return
 }
 
+// TOBEREMOVEDPROBABLY
 // Helper Function
 // Brief: Return Next Tasks Slices Index
 func nextTaskIndex() int {

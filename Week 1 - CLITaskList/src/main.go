@@ -1,7 +1,9 @@
+package main
+
 /*
+Brief: Main Starting Module
 Command-Line Arguments and Parsing User Input to Tasks and Storage
 */
-package main
 
 import (
 	"fmt"
@@ -38,8 +40,6 @@ func main() {
 			fmt.Println("Missing Task Description")
 			return
 		}
-
-		break
 	case "Remove":
 		break
 	}
