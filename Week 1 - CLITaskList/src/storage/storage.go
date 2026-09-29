@@ -3,6 +3,16 @@ package storage
 // Storage Module.
 // Brief: Writes and Reads the Tasks Struct Marshaling and Unmarshaling the JSON Encoding from the bytes which are Write/Read to/from the file.
 
+// IMPORTANT NOTE TO SELF
+/*
+JSON marshalling SHOULD be handled by separate storage functions
+i.e. Read and Write handle in BYTES for I/O Separation
+Whereas Two Separate functions Encodes/Decodes the Bytes to/from JSON Array from/to the Tasks Slice Memory Address.
+
+
+
+*/
+
 import (
 	"encoding/json"  // For JSON handling
 	"fmt"            // Format for console display
@@ -27,6 +37,7 @@ func doesStorageExist() bool {
 
 func EnsureStorageExists() bool {
 	if !doesStorageExist() {
+		fmt.Println("Storage doesn't exist! - Creating.")
 		os.Mkdir("data", 0755) // create data folder, with 0755 perms (Owner: rwx, Everyone Else: r-x)
 
 		fmt.Println(file_path)
@@ -42,6 +53,7 @@ func EnsureStorageExists() bool {
 
 		return true
 	} else {
+		fmt.Println(file_path)
 		return true
 	}
 }

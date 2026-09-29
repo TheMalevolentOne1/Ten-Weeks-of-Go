@@ -36,8 +36,7 @@ func CreateTask(name string, desc string) Task {
 	return newTask
 }
 
-func AddTaskToList(t Task) {
-	// append(Tasks, t) - Something something pointer slices indexes something sigh.
+func AddTaskToSlice(t Task) {
+	Tasks = append(Tasks, t) // Overwrite original slice, with new slice made by append with new task.
 	fmt.Println("Task Added.")
-	return
 }
