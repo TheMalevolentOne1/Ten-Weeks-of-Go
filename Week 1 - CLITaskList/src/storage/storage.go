@@ -27,6 +27,13 @@ var dir, err = os.Getwd()
 
 var file_path string = filepath.Join(dir, file)
 
+func decodeJSON(b []byte) (decodeBytes []byte) {
+	return // TODO
+}
+func encodeJSON(b []byte) (encodeJSON []byte) {
+	return // TODO
+}
+
 func doesStorageExist() bool {
 	if _, err := os.Stat(file); err == nil {
 		return true
@@ -58,6 +65,7 @@ func EnsureStorageExists() bool {
 	}
 }
 
+// SHOULD BE COMPLETELY REDONE TO FIT INTO PLAN
 func Read() ([]byte, error) {
 	if !EnsureStorageExists() {
 	}

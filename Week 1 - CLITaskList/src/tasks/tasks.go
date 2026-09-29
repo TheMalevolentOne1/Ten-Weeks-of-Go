@@ -9,6 +9,7 @@ import (
 	"fmt"
 )
 
+// TODO: Should update with incremental ID.
 type Task struct {
 	name        string
 	description string
