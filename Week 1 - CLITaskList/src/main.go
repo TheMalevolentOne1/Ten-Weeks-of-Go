@@ -3,8 +3,6 @@ package main
 /*
 Brief: Main Starting Module
 
-To maintain a separation of concerns:
-
 Main - Command-Line Arguments ONLY.
 Tasks - Handles the Struct, and Slice.
 Storage - Handles File Handling and JSON Un/Marshaling
@@ -20,7 +18,7 @@ import (
 func toLower(x string) string {
 	var newStr string = ""
 	for i := 0; i < len(x); i++ {
-		newStr += strings.ToLower(string(x[i])) // convert x byte into string?... isn't this already a string by the parameter -_-#
+		newStr += strings.ToLower(string(x[i]))
 	}
 	return newStr
 }
@@ -41,8 +39,7 @@ func main() {
 		return
 	}
 
-	firstArg := os.Args[2]  // task name
-	secondArg := os.Args[3] // task description
+	firstArg := os.Args[2] // task name
 
 	if firstArg == "" {
 		fmt.Println("Missing Task Name")
@@ -51,14 +48,15 @@ func main() {
 
 	switch subcommand {
 	case "add":
-		if secondArg == "" {
-			fmt.Println("Missing Task Description")
-			return
+		var newTask tasks.Task
+
+		if secondArg := os.Args[3]; secondArg != "" {
+			newTask = tasks.CreateTask(firstArg, secondArg)
+		} else {
+			newTask = tasks.CreateTask(firstArg, "")
 		}
 
-		newTask := tasks.CreateTask(firstArg, secondArg)
 		tasks.AddTaskToSlice(newTask)
-
 		fmt.Println("TASKS ARE NOT CURRENTLY SAVED! FUNCTIONALLY ADDED TO TASKS LIST FOR LATER REFERENCE BY STORAGE MODULE!")
 	case "Remove":
 		fmt.Println("TODO: REMOVE TASK")

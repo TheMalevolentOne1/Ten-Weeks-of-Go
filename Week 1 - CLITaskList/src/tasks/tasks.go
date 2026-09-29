@@ -9,13 +9,15 @@ import (
 	"fmt"
 )
 
-// TODO: Should update with incremental ID.
 type Task struct {
+	id          int
 	name        string
 	description string
 }
 
 var Tasks []Task
+
+func getNextTaskID() int { return len(Tasks) + 1 }
 
 func ShowAllTasks() {
 	if lenTasks := len(Tasks); lenTasks == 0 {
@@ -29,12 +31,7 @@ func ShowAllTasks() {
 
 func CreateTask(name string, desc string) Task {
 	fmt.Println("Adding Task")
-
-	newTask := Task{}
-	newTask.name = name
-	newTask.description = desc
-
-	return newTask
+	return Task{id: getNextTaskID(), name: name, description: desc}
 }
 
 func AddTaskToSlice(t Task) {

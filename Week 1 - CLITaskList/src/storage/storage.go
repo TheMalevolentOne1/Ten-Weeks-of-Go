@@ -8,9 +8,6 @@ package storage
 JSON marshalling SHOULD be handled by separate storage functions
 i.e. Read and Write handle in BYTES for I/O Separation
 Whereas Two Separate functions Encodes/Decodes the Bytes to/from JSON Array from/to the Tasks Slice Memory Address.
-
-
-
 */
 
 import (
@@ -27,11 +24,25 @@ var dir, err = os.Getwd()
 
 var file_path string = filepath.Join(dir, file)
 
-func decodeJSON(b []byte) (decodeBytes []byte) {
-	return // TODO
+var tmp_tasks_copy []tasks.Task // Prevents Editing of Tasks Module List
+
+func encodeJSON(b []byte) []byte {
+	data, err := json.Marshal(b)
+	if err != nil {
+		fmt.Println(err)
+		return []byte{}
+	} else {
+		return data
+	}
 }
-func encodeJSON(b []byte) (encodeJSON []byte) {
-	return // TODO
+
+func decodeJSON(b []byte) {
+	err = json.Unmarshal(b, &tmp_tasks_copy)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		return
+	}
 }
 
 func doesStorageExist() bool {
@@ -66,16 +77,5 @@ func EnsureStorageExists() bool {
 }
 
 // SHOULD BE COMPLETELY REDONE TO FIT INTO PLAN
-func Read() ([]byte, error) {
-	if !EnsureStorageExists() {
-	}
-	dataStored, err := os.ReadFile(file_path)
-
-	json.Unmarshal(dataStored, &tasks.Tasks) // Decode JSON data from dataStored into the Tasks slice address.
-
-	if err != nil {
-		return []byte{}, err
-	} else {
-		return []byte(dataStored), err
-	}
-}
+// func Read() ([]byte, error) {}
+// func Write([]byte) (error) {}
