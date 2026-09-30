@@ -18,14 +18,20 @@ import (
 
 const file = "data/tasks.json"
 
-var dir, err = os.Getwd()
+var dir, err = os.Getwd() // GetWorkingDirectory
 
-var file_path string = filepath.Join(dir, file)
+var file_path string = filepath.Join(dir, file) // json data file path
 
-var tmp_tasks_copy []tasks.Task // Empty Tasks Array. Prevents Editing/Corruption of Tasks Module List.
+var tmp_tasks []tasks.Task // Empty Tasks Array. Prevents Editing/Corruption of Tasks Module List.
+var tmp_task tasks.Task
 
-func encodeJSON(b []byte) []byte {
-	data, err := json.Marshal(b)
+/*
+Brief: Encodes Task Struct from Struct into JSON
+Parameters:
+b - bytes (the bytes of the Tasks slice)
+*/
+func encodeJSONTask(t tasks.Task) []byte {
+	data, err := json.Marshal(t)
 	if err != nil {
 		fmt.Println(err)
 		return []byte{}
@@ -34,8 +40,13 @@ func encodeJSON(b []byte) []byte {
 	}
 }
 
-func decodeJSON(b []byte) {
-	err = json.Unmarshal(b, &tmp_tasks_copy)
+/*
+Brief: Decodes bytes of JSON into the empty Tasks Struct
+Parameters:
+b - bytes (the bytes of JSON data)
+*/
+func decodeJSONTasks(b []byte) {
+	err = json.Unmarshal(b, &tmp_task)
 	if err != nil {
 		fmt.Println(err)
 	} else {
@@ -62,6 +73,8 @@ func EnsureStorageExists() bool {
 		// file contents stored in an empty array in bytes
 		err = os.WriteFile(file_path, []byte("[]"), 0755)
 
+		fmt.Println("Storage Made. - Path - ", file_path)
+
 		if err != nil {
 			fmt.Println(err)
 			return false
@@ -78,6 +91,7 @@ func EnsureStorageExists() bool {
 // func Read() ([]byte, error) {}
 // func Write([]byte) (error) {}
 
-func Read() {
-
+func SaveTask(t tasks.Task) {
+	jsonT := encodeJSONTask(t)
+	fmt.Println(jsonT)
 }

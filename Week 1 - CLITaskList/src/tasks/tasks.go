@@ -28,8 +28,3 @@ func ShowAllTasks() {
 		}
 	}
 }
-
-func AddTaskToSlice(t Task) {
-	Tasks = append(Tasks, t) // Overwrite original slice, with new slice made by append with new task.
-	fmt.Println("Task Added.")
-}

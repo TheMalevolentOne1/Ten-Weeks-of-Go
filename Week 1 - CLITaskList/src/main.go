@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"tasklist/storage"
 	"tasklist/tasks"
 )
 
@@ -54,7 +55,7 @@ func main() {
 		} else {
 			newTask = tasks.Task{Id: tasks.GetNextTaskID(), Name: firstArg, Description: secondArg}
 		}
-		tasks.AddTaskToSlice(newTask)
+		storage.SaveTask(newTask)
 		fmt.Println("TASKS ARE NOT CURRENTLY SAVED! FUNCTIONALLY ADDED TO TASKS LIST FOR LATER REFERENCE BY STORAGE MODULE!")
 	case "Remove":
 		fmt.Println("TODO: REMOVE TASK")
