@@ -10,14 +10,14 @@ import (
 )
 
 type Task struct {
-	id          int
-	name        string
-	description string
+	Id          int
+	Name        string
+	Description string
 }
 
 var Tasks []Task
 
-func getNextTaskID() int { return len(Tasks) + 1 }
+func GetNextTaskID() int { return len(Tasks) + 1 }
 
 func ShowAllTasks() {
 	if lenTasks := len(Tasks); lenTasks == 0 {
@@ -27,11 +27,6 @@ func ShowAllTasks() {
 			fmt.Println(Tasks[i])
 		}
 	}
-}
-
-func CreateTask(name string, desc string) Task {
-	fmt.Println("Adding Task")
-	return Task{id: getNextTaskID(), name: name, description: desc}
 }
 
 func AddTaskToSlice(t Task) {

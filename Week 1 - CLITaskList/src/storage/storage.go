@@ -5,9 +5,7 @@ package storage
 
 // IMPORTANT NOTE TO SELF
 /*
-JSON marshalling SHOULD be handled by separate storage functions
-i.e. Read and Write handle in BYTES for I/O Separation
-Whereas Two Separate functions Encodes/Decodes the Bytes to/from JSON Array from/to the Tasks Slice Memory Address.
+Read and Write handle in BYTES for I/O Separation
 */
 
 import (
@@ -24,7 +22,7 @@ var dir, err = os.Getwd()
 
 var file_path string = filepath.Join(dir, file)
 
-var tmp_tasks_copy []tasks.Task // Prevents Editing of Tasks Module List
+var tmp_tasks_copy []tasks.Task // Empty Tasks Array. Prevents Editing/Corruption of Tasks Module List.
 
 func encodeJSON(b []byte) []byte {
 	data, err := json.Marshal(b)
@@ -79,3 +77,7 @@ func EnsureStorageExists() bool {
 // SHOULD BE COMPLETELY REDONE TO FIT INTO PLAN
 // func Read() ([]byte, error) {}
 // func Write([]byte) (error) {}
+
+func Read() {
+
+}

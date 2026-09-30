@@ -48,14 +48,12 @@ func main() {
 
 	switch subcommand {
 	case "add":
-		var newTask tasks.Task
-
+		var newTask = tasks.Task{}
 		if secondArg := os.Args[3]; secondArg != "" {
-			newTask = tasks.CreateTask(firstArg, secondArg)
+			newTask = tasks.Task{Id: tasks.GetNextTaskID(), Name: firstArg, Description: secondArg}
 		} else {
-			newTask = tasks.CreateTask(firstArg, "")
+			newTask = tasks.Task{Id: tasks.GetNextTaskID(), Name: firstArg, Description: secondArg}
 		}
-
 		tasks.AddTaskToSlice(newTask)
 		fmt.Println("TASKS ARE NOT CURRENTLY SAVED! FUNCTIONALLY ADDED TO TASKS LIST FOR LATER REFERENCE BY STORAGE MODULE!")
 	case "Remove":
