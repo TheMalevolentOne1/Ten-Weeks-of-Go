@@ -20,6 +20,12 @@ type Task struct {
 
 var Tasks []Task
 
+const file = "data/tasks.json"
+
+var dir, err = os.Getwd() // GetWorkingDirectory
+
+var filePath string = filepath.Join(dir, file) // json data file path
+
 func GetNextTaskID() int {
 	fmt.Println(Tasks)
 	return len(Tasks) + 1
@@ -30,16 +36,14 @@ func ShowAllTasks() {
 		fmt.Println("No Tasks.")
 	} else {
 		for i := 0; i < lenTasks; i++ {
-			fmt.Println(Tasks[i])
+			fmt.Printf("Task Number %d \nTask: %s \nDescription: %s \n",
+				Tasks[i].Id,
+				Tasks[i].Name,
+				Tasks[i].Description,
+			)
 		}
 	}
 }
-
-const file = "data/tasks.json"
-
-var dir, err = os.Getwd() // GetWorkingDirectory
-
-var filePath string = filepath.Join(dir, file) // json data file path
 
 /*
 Brief: Encodes Task Struct from Struct into JSON
@@ -61,7 +65,7 @@ Brief: Decodes all bytes of JSON into Tasks Struct
 Parameters:
 b - bytes (the bytes of JSON data)
 */
-func DecodeAllJSONTasks() {
+func DecodeAllJSONTasks() { // Load JSON File into Tasks Struct Memory
 	if b, err := os.ReadFile(filePath); err == nil {
 		err = json.Unmarshal(b, &Tasks)
 		if err != nil {
@@ -118,9 +122,6 @@ func EnsureStorageExists() bool {
 }
 
 func SaveNewTask(t Task) {
-	if !EnsureStorageExists() {
-		return
-	}
 	var jsonBytes []byte = encodeJSONTask(t)
 	if data, err := os.ReadFile(filePath); err == nil {
 		// Remove Last Element of Slice Source: https://stackoverflow.com/questions/26172196/how-to-remove-the-last-element-from-a-slice

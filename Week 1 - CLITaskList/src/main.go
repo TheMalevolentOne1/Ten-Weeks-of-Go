@@ -34,6 +34,10 @@ func main() {
 	// Ensure Subcommand Exists
 	subcommand := os.Args[1] // all, add, remove
 
+	if !tasks.EnsureStorageExists() {
+		return
+	}
+
 	tasks.DecodeAllJSONTasks() // Decode JSON Data and Populate Tasks Struct.
 
 	if subcommand == "all" {
