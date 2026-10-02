@@ -20,7 +20,10 @@ type Task struct {
 
 var Tasks []Task
 
-func GetNextTaskID() int { return len(Tasks) + 1 }
+func GetNextTaskID() int {
+	fmt.Println(Tasks)
+	return len(Tasks) + 1
+}
 
 func ShowAllTasks() {
 	if lenTasks := len(Tasks); lenTasks == 0 {
@@ -58,9 +61,12 @@ Brief: Decodes all bytes of JSON into Tasks Struct
 Parameters:
 b - bytes (the bytes of JSON data)
 */
-func decodeAllJSONTasks() {
+func DecodeAllJSONTasks() {
 	if b, err := os.ReadFile(filePath); err == nil {
-		json.Unmarshal(b, &Tasks)
+		err = json.Unmarshal(b, &Tasks)
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
 }
 
@@ -111,17 +117,19 @@ func EnsureStorageExists() bool {
 	}
 }
 
-func SaveTask(t Task) {
+func SaveNewTask(t Task) {
 	if !EnsureStorageExists() {
 		return
 	}
 	var jsonBytes []byte = encodeJSONTask(t)
 	if data, err := os.ReadFile(filePath); err == nil {
 		// Remove Last Element of Slice Source: https://stackoverflow.com/questions/26172196/how-to-remove-the-last-element-from-a-slice
-		data = data[:len(data)-1]            // Remove ]
-		data = append(data, jsonBytes...)    // add JSON
-		data = append(data, []byte(", ")...) // ,
-		data = append(data, ']')             // ] end the array.
+		data = data[:len(data)-1] // Remove ]
+		if data[len(data)-1] == '}' {
+			data = append(data, []byte(", ")...) // ,
+		}
+		data = append(data, jsonBytes...) // add JSON
+		data = append(data, ']')          // ] end the array.
 		os.WriteFile(filePath, data, os.ModeAppend.Type().Perm())
 		return
 	} else {

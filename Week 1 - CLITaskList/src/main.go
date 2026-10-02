@@ -12,7 +12,6 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"tasklist/storage"
 	"tasklist/tasks"
 )
 
@@ -35,6 +34,8 @@ func main() {
 	// Ensure Subcommand Exists
 	subcommand := os.Args[1] // all, add, remove
 
+	tasks.DecodeAllJSONTasks() // Decode JSON Data and Populate Tasks Struct.
+
 	if subcommand == "all" {
 		tasks.ShowAllTasks()
 		return
@@ -55,7 +56,7 @@ func main() {
 		} else {
 			newTask = tasks.Task{Id: tasks.GetNextTaskID(), Name: firstArg, Description: secondArg}
 		}
-		storage.SaveTask(newTask)
+		tasks.SaveNewTask(newTask)
 		fmt.Println("TASKS ARE NOT CURRENTLY SAVED! FUNCTIONALLY ADDED TO TASKS LIST FOR LATER REFERENCE BY STORAGE MODULE!")
 	case "Remove":
 		fmt.Println("TODO: REMOVE TASK")
