@@ -47,7 +47,7 @@ func main() {
 
 	firstArg := os.Args[2] // task name
 
-	if firstArg == "" {
+	if len(os.Args[2]) > 0 && firstArg == "" {
 		fmt.Println("Missing Task Name")
 		return
 	}
@@ -61,7 +61,7 @@ func main() {
 			newTask = tasks.Task{Id: tasks.GetNextTaskID(), Name: firstArg, Description: secondArg}
 		}
 		tasks.SaveNewTask(newTask)
-		fmt.Println("TASKS ARE NOT CURRENTLY SAVED! FUNCTIONALLY ADDED TO TASKS LIST FOR LATER REFERENCE BY STORAGE MODULE!")
+		fmt.Println("Task Saved.")
 	case "Remove":
 		fmt.Println("TODO: REMOVE TASK")
 	}
