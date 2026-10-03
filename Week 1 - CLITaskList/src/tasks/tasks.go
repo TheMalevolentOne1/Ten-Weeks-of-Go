@@ -18,6 +18,11 @@ type Task struct {
 	Description string
 }
 
+const header string = `
+|--------------------|
+| TASKLIST MANAGER   |
+|--------------------|`
+
 var Tasks []Task
 
 const file = "data/tasks.json"
@@ -33,9 +38,11 @@ func GetNextTaskID() int {
 
 func ShowAllTasks() {
 	if lenTasks := len(Tasks); lenTasks == 0 {
+		fmt.Println(header)
 		fmt.Println("No Tasks.")
 	} else {
-		for i := 0; i < lenTasks; i++ {
+		fmt.Println(header)
+		for i := range lenTasks {
 			fmt.Printf("Task Number: %d \nTask: %s \nDescription: %s \n",
 				Tasks[i].Id,
 				Tasks[i].Name,
@@ -46,7 +53,7 @@ func ShowAllTasks() {
 }
 
 /*
-Brief: Encodes Task Struct from Struct into JSON
+encodeJSONTask ensures that the Task Struct argument is encoded into json and returned otherwise an error is returned without the bytes.
 Parameters:
 b - bytes (the bytes of the Tasks slice)
 */
@@ -100,7 +107,7 @@ Returnn Boolean whether creation was successful or already exists.
 func EnsureStorageExists() bool {
 	// if storage exists but doesn't contain the 91 and 93 bytes at start and end it will overwrite.
 	if !doesStorageExist() {
-		fmt.Println("Storage doesn't exist! - Creating.")
+		fmt.Println(header)
 		os.Mkdir("data", filePerm) // create data folder, with 0655 perms (Owner: rwx, Everyone Else: r-x)
 
 		fmt.Println(filePath)
@@ -123,11 +130,12 @@ func EnsureStorageExists() bool {
 	}
 }
 
-func SaveNewTask(t Task) error {
+func SaveTask(t Task) error {
 	var taskEncoded []byte
 
-	if tJSON, err := encodeJSONTask(t); err != nil {
+	if tJSON, err := encodeJSONTask(t); err == nil {
 		taskEncoded = tJSON
+	} else {
 		return err
 	}
 

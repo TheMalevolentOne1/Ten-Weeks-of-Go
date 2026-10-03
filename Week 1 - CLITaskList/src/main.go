@@ -1,11 +1,10 @@
 package main
 
 /*
-Brief: Main Starting Module
+Main Starting Module
 
 Main - Command-Line Arguments ONLY.
-Tasks - Handles the Struct, and Slice.
-Storage - Handles File Handling and JSON Un/Marshaling
+Tasks - Handles the Struct, Slices, File Handling and JSON Un/Marshaling.
 */
 
 import (
@@ -24,6 +23,10 @@ func toLower(x string) string {
 	return newStr
 }
 
+const addCmd = "add"
+const removeCmd = "remove"
+const allCmd = "all"
+
 // Program Starting Point
 func main() {
 	// Ensure Arguments Present
@@ -32,53 +35,85 @@ func main() {
 		return
 	}
 
-	// Ensure Subcommand Exists
-	subcommand := os.Args[1] // all, add, remove
-
 	if !tasks.EnsureStorageExists() {
+		fmt.Println("Storage could not be created.")
+		return
+	} else {
+		fmt.Println("Storage Confirmed")
+	}
+
+	err := tasks.DecodeAllJSONTasks() // Decode Existing JSON Data and Populate Tasks Struct.
+
+	if err != nil {
+		fmt.Println(err)
 		return
 	}
 
-	tasks.DecodeAllJSONTasks() // Decode JSON Data and Populate Tasks Struct.
+	fmt.Println("Tasks:")
+	fmt.Println(tasks.Tasks)
 
-	if subcommand == "all" {
-		tasks.ShowAllTasks()
-		return
-	}
-
-	firstArg := os.Args[2]
-
-	if len(os.Args[2]) > 0 && firstArg == "" {
-		fmt.Println("Missing Task Name")
-		return
-	}
+	// Ensure Subcommand Exists
+	subcommand := toLower(os.Args[1]) // all, add, remove
 
 	switch subcommand {
-	case "add":
-		var newTask = tasks.Task{}
-		if taskName := os.Args[3]; taskName != "" {
-			newTask = tasks.Task{Id: tasks.GetNextTaskID(), Name: firstArg, Description: taskName}
-		} else {
-			newTask = tasks.Task{Id: tasks.GetNextTaskID(), Name: firstArg, Description: taskName}
-		}
-		tasks.SaveNewTask(newTask)
-		fmt.Println("Task Saved.")
-	case "Remove":
-		if len(os.Args) <= 2 {
-			fmt.Println("Missing Task ID to Remove.")
+	case allCmd:
+		tasks.ShowAllTasks()
+		return
+
+	case addCmd:
+		if len(os.Args) < 3 {
+			fmt.Println("Missing Task Name")
 			return
 		}
 
-		taskId := os.Args[2]
-
-		if id, err := strconv.Atoi(taskId); err != nil {
-			fmt.Println("That is not a number.")
-		} else {
-			if tPos, err := tasks.FindIDTask(id); err == nil {
-				tasks.RemoveTask(tPos)
-			} else {
-				fmt.Println(err)
-			}
+		taskName := os.Args[2]
+		taskDesc := ""
+		if len(os.Args) >= 4 {
+			taskDesc = os.Args[3]
 		}
+
+		newTask := tasks.Task{
+			Id:          tasks.GetNextTaskID(),
+			Name:        taskName,
+			Description: taskDesc,
+		}
+		if err := tasks.SaveTask(newTask); err != nil {
+			fmt.Println(err)
+			fmt.Println("Task Not Saved.")
+			return
+		}
+		fmt.Println("Task Saved.")
+
+	case removeCmd:
+		if len(os.Args) < 2 {
+			fmt.Println("Missing Task ID")
+			return
+		}
+
+		var task_id int
+
+		if id, err := strconv.Atoi(os.Args[2]); err != nil {
+			fmt.Println("Task ID provided is not a number!")
+		} else {
+			task_id = id
+		}
+
+		if tPos, err := tasks.FindIDTask(task_id); err == nil {
+			tasks.RemoveTask(tPos)
+		} else {
+			fmt.Println(err)
+		}
+	case "help":
+		fmt.Println(`
+		HELP MENU
+		Key:
+		<> Required [] Optional
+
+		Commands:
+		tasklist all
+		tasklist add <TASK_NAME> [DESCRIPTION]
+		tasklist remove [--list] <TASK_ID>`)
+	default:
+		fmt.Println("Argument Not Recognised - Seek, Help.")
 	}
 }
