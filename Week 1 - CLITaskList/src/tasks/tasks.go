@@ -36,7 +36,7 @@ func ShowAllTasks() {
 		fmt.Println("No Tasks.")
 	} else {
 		for i := 0; i < lenTasks; i++ {
-			fmt.Printf("Task Number %d \nTask: %s \nDescription: %s \n",
+			fmt.Printf("Task Number: %d \nTask: %s \nDescription: %s \n",
 				Tasks[i].Id,
 				Tasks[i].Name,
 				Tasks[i].Description,
@@ -50,90 +50,98 @@ Brief: Encodes Task Struct from Struct into JSON
 Parameters:
 b - bytes (the bytes of the Tasks slice)
 */
-func encodeJSONTask(t Task) []byte {
+func encodeJSONTask(t Task) ([]byte, error) {
 	data, err := json.Marshal(t)
+
 	if err != nil {
-		fmt.Println(err)
-		return []byte{}
+		return nil, err
 	} else {
-		return data
+		return data, nil
 	}
 }
 
 /*
-Brief: Decodes all bytes of JSON into Tasks Struct
+DecodeAllJsonTasks ensures that all JSON Tasks decoded from the JSON File into the Tasks Struct otherwise returns error.
 Parameters:
 b - bytes (the bytes of JSON data)
 */
-func DecodeAllJSONTasks() { // Load JSON File into Tasks Struct Memory
+func DecodeAllJSONTasks() error { // Load JSON File into Tasks Struct Memory
 	if b, err := os.ReadFile(filePath); err == nil {
-		err = json.Unmarshal(b, &Tasks)
+		err = json.Unmarshal(b, &Tasks) // Decode JSON into Tasks Struct
 		if err != nil {
-			fmt.Println(err)
+			return err
 		}
 	}
+
+	return nil
 }
 
+// doesStorageExist ensures json file exists with [ bytes at the start and end ]
+// returns boolean with result if exists, with valid empty slice.
 func doesStorageExist() bool {
-	if _, err := os.Stat(file); err == nil {
-		if data, err := os.ReadFile(file); err == nil {
+	if _, err := os.Stat(filePath); err == nil {
+		if data, err := os.ReadFile(filePath); err == nil {
 			// confirm length contains at least two and [ and ] and CORRECT BYTES [91, 93]
 			if len(data) >= 2 && data[0] == '[' && data[len(data)-1] == ']' {
 				return true
-			} else {
-				return false
 			}
-		} else {
-			return false
 		}
-	} else {
-		return false
 	}
+
+	return false
 }
 
+var filePerm = os.ModeAppend.Type().Perm()
+
 /*
-Brief: Ensure the storage exists, and create it.
+EnsureStorageExists ensures the storage exists, and if it doesn't create it.
 Returnn Boolean whether creation was successful or already exists.
 */
 func EnsureStorageExists() bool {
 	// if storage exists but doesn't contain the 91 and 93 bytes at start and end it will overwrite.
 	if !doesStorageExist() {
 		fmt.Println("Storage doesn't exist! - Creating.")
-		os.Mkdir("data", 0755) // create data folder, with 0755 perms (Owner: rwx, Everyone Else: r-x)
+		os.Mkdir("data", filePerm) // create data folder, with 0655 perms (Owner: rwx, Everyone Else: r-x)
 
 		fmt.Println(filePath)
 
 		// create a tasks.json file in data directory
 		// file contents stored in an empty array in bytes
-		err = os.WriteFile(filePath, []byte("[]"), 0755)
+		err = os.WriteFile(filePath, []byte("[]"), filePerm)
 
 		fmt.Println("Storage Made. - Path - ", filePath)
 
 		if err != nil {
 			fmt.Println(err)
 			return false
+		} else {
+			return true
 		}
-
-		return true
 	} else {
 		fmt.Println(filePath)
 		return true
 	}
 }
 
-func SaveNewTask(t Task) {
-	var jsonBytes []byte = encodeJSONTask(t)
+func SaveNewTask(t Task) error {
+	var taskEncoded []byte
+
+	if tJSON, err := encodeJSONTask(t); err != nil {
+		taskEncoded = tJSON
+		return err
+	}
+
 	if data, err := os.ReadFile(filePath); err == nil {
 		// Remove Last Element of Slice Source: https://stackoverflow.com/questions/26172196/how-to-remove-the-last-element-from-a-slice
-		data = data[:len(data)-1] // Remove ]
-		if data[len(data)-1] == '}' {
+		data = data[:len(data)-1]     // Remove ]
+		if data[len(data)-1] == '}' { // Ensure previous is closing json tag
 			data = append(data, []byte(", ")...) // ,
 		}
-		data = append(data, jsonBytes...) // add JSON
-		data = append(data, ']')          // ] end the array.
-		os.WriteFile(filePath, data, os.ModeAppend.Type().Perm())
-		return
+		data = append(data, taskEncoded...) // add JSON
+		data = append(data, ']')            // ] end the array.
+		os.WriteFile(filePath, data, filePerm)
+		return nil
 	} else {
-		return
+		return nil
 	}
 }
