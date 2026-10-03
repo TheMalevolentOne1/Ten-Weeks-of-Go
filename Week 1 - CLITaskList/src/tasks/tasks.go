@@ -145,3 +145,64 @@ func SaveNewTask(t Task) error {
 		return nil
 	}
 }
+
+// TODO: ID numbers could overlap as based on size.
+// - Some ID Correction function should be implemented to ensure the numbers are accurate;
+// Lazier Method: Scratching that overwriting the IDs to be manually accurate 1,2,3,3,5 to 1,2,3,4,5.
+// Problem: Loses integrity of the original ID... The Wrong ID could be deleted in sequential updates.
+// No undo or error mitigation handling...
+func fixIDNumbers() {
+
+}
+
+// FindID ensures that the Task ID is found and the first { position is returned.
+func FindIDTask(id int) (int, error) {
+	if err != nil {
+		return 0, err
+	}
+
+	for i := 0; i < len(Tasks); i++ {
+		if Tasks[i].Id == id {
+			return i, nil
+		} else {
+			continue
+		}
+	}
+
+	return id, nil
+}
+
+// RemoveTask ensures a task is removed from the JSON file using the first curly bracket then deleting all subsequent bytes adding a comma if necessary.
+func RemoveTask(tPos int) error {
+	data, err := os.ReadFile(filePath)
+
+	if err != nil {
+		return err
+	}
+
+	var jsonStartPos int
+	var jsonEndPos int
+
+	count := 0
+
+	for i, jsonPos := range data {
+		if count != tPos && jsonPos == '{' {
+			count++
+		}
+
+		if count == tPos && jsonPos == '{' { // find the { when the right index is located for Task
+			jsonStartPos = i
+		}
+
+		if count == tPos && jsonPos == '}' {
+			jsonEndPos = i
+			break
+		}
+	}
+
+	fmt.Println(count)
+	fmt.Println(jsonStartPos)
+	fmt.Println(jsonEndPos)
+
+	return nil
+}

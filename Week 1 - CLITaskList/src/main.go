@@ -9,10 +9,11 @@ Storage - Handles File Handling and JSON Un/Marshaling
 */
 
 import (
-	"fmt"
-	"os"
-	"strings"
-	"tasklist/tasks"
+	"fmt"            // Format Text To Display in Terminal
+	"os"             // File Handling
+	"strconv"        // Verify and Convert String Arg to ID Int - Variable Type
+	"strings"        // String Manipulation Functions
+	"tasklist/tasks" // Tasks Exported Functions
 )
 
 func toLower(x string) string {
@@ -45,7 +46,7 @@ func main() {
 		return
 	}
 
-	firstArg := os.Args[2] // task name
+	firstArg := os.Args[2]
 
 	if len(os.Args[2]) > 0 && firstArg == "" {
 		fmt.Println("Missing Task Name")
@@ -55,14 +56,29 @@ func main() {
 	switch subcommand {
 	case "add":
 		var newTask = tasks.Task{}
-		if secondArg := os.Args[3]; secondArg != "" {
-			newTask = tasks.Task{Id: tasks.GetNextTaskID(), Name: firstArg, Description: secondArg}
+		if taskName := os.Args[3]; taskName != "" {
+			newTask = tasks.Task{Id: tasks.GetNextTaskID(), Name: firstArg, Description: taskName}
 		} else {
-			newTask = tasks.Task{Id: tasks.GetNextTaskID(), Name: firstArg, Description: secondArg}
+			newTask = tasks.Task{Id: tasks.GetNextTaskID(), Name: firstArg, Description: taskName}
 		}
 		tasks.SaveNewTask(newTask)
 		fmt.Println("Task Saved.")
 	case "Remove":
-		fmt.Println("TODO: REMOVE TASK")
+		if len(os.Args) <= 2 {
+			fmt.Println("Missing Task ID to Remove.")
+			return
+		}
+
+		taskId := os.Args[2]
+
+		if id, err := strconv.Atoi(taskId); err != nil {
+			fmt.Println("That is not a number.")
+		} else {
+			if tPos, err := tasks.FindIDTask(id); err == nil {
+				tasks.RemoveTask(tPos)
+			} else {
+				fmt.Println(err)
+			}
+		}
 	}
 }
